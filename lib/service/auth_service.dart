@@ -4,19 +4,27 @@ class AuthService {
   FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<User?> register(String email, String password) async {
-    var result = await auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    return result.user;
+    try {
+      var result = await auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return result.user;
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<User?> login(String email, String password) async {
-    var result = await auth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    return result.user;
+    try {
+      var result = await auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return result.user;
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<void> logout() async {

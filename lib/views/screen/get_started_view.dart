@@ -17,21 +17,12 @@ class GetStartedScreen extends StatelessWidget {
               fit: StackFit.expand,
               children: [
                 Image.network(
-                  'https://cdn-icons-png.flaticon.com/256/8165/8165687.png',
+                  'https://cdn-icons-png.flaticon.com/128/2940/2940653.png',
                   fit: BoxFit.cover,
                   errorBuilder: (_, __, ___) =>
                       Container(color: const Color(0xFFCFE3EE)),
                 ),
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Colors.transparent, Colors.white],
-                      stops: [0.55, 1.0],
-                    ),
-                  ),
-                ),
+                
               ],
             ),
           ),

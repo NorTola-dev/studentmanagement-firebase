@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:studentmanagement/service/auth_service.dart';
+import 'package:studentmanagement/views/screen/home_screen.dart';
 
 const kDark = Color(0xFF1E232C);
 const kFieldBg = Color(0xFFF7F8F9);
@@ -44,8 +46,11 @@ class AuthScaffold extends StatelessWidget {
                           shape: BoxShape.circle,
                           color: kFieldBg,
                         ),
-                        child: const Icon(Icons.arrow_back_ios_new,
-                            size: 14, color: kDark),
+                        child: const Icon(
+                          Icons.arrow_back_ios_new,
+                          size: 14,
+                          color: kDark,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 22),
@@ -120,8 +125,10 @@ class AuthField extends StatelessWidget {
         filled: true,
         fillColor: kFieldBg,
         suffixIcon: suffix,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: kBorder),
@@ -139,7 +146,11 @@ class PrimaryButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
 
-  const PrimaryButton({super.key, required this.label, required this.onPressed});
+  const PrimaryButton({
+    super.key,
+    required this.label,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -171,10 +182,7 @@ class OrDivider extends StatelessWidget {
         const Expanded(child: Divider(color: kBorder)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text(
-            text,
-            style: const TextStyle(color: kDark, fontSize: 12),
-          ),
+          child: Text(text, style: const TextStyle(color: kDark, fontSize: 12)),
         ),
         const Expanded(child: Divider(color: kBorder)),
       ],
@@ -187,19 +195,34 @@ class SocialRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthService authService = AuthService();
     return Row(
       children: [
         Expanded(
           child: SocialButton(
             onTap: () {},
-            child: const Icon(Icons.facebook, color: Color(0xFF1877F2), size: 26),
+            child: const Icon(
+              Icons.facebook,
+              color: Color(0xFF1877F2),
+              size: 26,
+            ),
           ),
         ),
         const SizedBox(width: 10),
         Expanded(
           child: SocialButton(
-            onTap: () {},
-            // Material icons has no Google logo; swap for an SVG/PNG asset if you have one.
+            onTap: () async {
+              var user = await authService.googleAuth();
+              if (user != null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Welcome home from google')),
+                );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                );
+              }
+            },
             child: const Text(
               'G',
               style: TextStyle(

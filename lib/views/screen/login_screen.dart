@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:studentmanagement/service/auth_service.dart';
+import 'package:studentmanagement/views/screen/home_screen.dart';
 import 'package:studentmanagement/views/screen/register_screen.dart';
 import 'package:studentmanagement/views/widgets/auth_widgets.dart';
 
@@ -88,6 +89,10 @@ class _LoginScreenState extends State<LoginScreen> {
               var user = await service.login(email, password);
               if (user != null) {
                 showSnackBar('Welcome home');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                );
               }
             }
           },

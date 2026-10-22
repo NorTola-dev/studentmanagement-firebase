@@ -11,19 +11,17 @@ class GetStartedScreen extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          Expanded(
-            flex: 5,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Image.network(
-                  'https://cdn-icons-png.flaticon.com/128/2940/2940653.png',
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) =>
-                      Container(color: const Color(0xFFCFE3EE)),
+          Container(
+            height: 200,
+            width: 200,
+            margin: EdgeInsets.only(top: 200),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(
+                  'https://cdn-icons-png.flaticon.com/128/3135/3135810.png',
                 ),
-                
-              ],
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           Expanded(

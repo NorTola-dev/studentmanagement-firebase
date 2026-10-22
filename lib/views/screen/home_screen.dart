@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:studentmanagement/service/auth_service.dart';
+import 'package:studentmanagement/service/cloude_service.dart';
 import 'package:studentmanagement/views/screen/get_started_view.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,12 +12,60 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   AuthService auth = AuthService();
+  CloudeService cloud = CloudeService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Welcome Home')),
-      body: Center(child: Text('Welcome home')),
+      body: StreamBuilder(
+        stream: cloud.getStudent(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData) {
+            return Center(child: Text('No Data'));
+          }
+
+          final stu = snapshot.data?.docs ?? [];
+          return ListView.builder(
+            itemCount: stu.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                leading: CircleAvatar(child: Icon(Icons.person)),
+                title: Text(stu[index]['name']),
+                subtitle: Text(stu[index]['phone']),
+                trailing: PopupMenuButton(
+                  itemBuilder: (context) {
+                    return [
+                      PopupMenuItem(
+                        onTap: () {
+                          cloud.updateStudent(
+                            stu[index].id,
+                            "roth",
+                            "female",
+                            "09699998888",
+                            4.0,
+                            18,
+                          );
+                        },
+                        child: Text('Update'),
+                      ),
+                      PopupMenuItem(
+                        onTap: () {
+                          cloud.deleteStudent(stu[index].id);
+                        },
+                        child: Text('Delete'),
+                      ),
+                    ];
+                  },
+                ),
+              );
+            },
+          );
+        },
+      ),
       drawer: Drawer(
         child: Column(
           children: [
@@ -49,6 +98,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          cloud.addStudent("roth", "female", "09699998888", 4.0, 18);
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
